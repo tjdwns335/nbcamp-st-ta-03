@@ -2,14 +2,25 @@ import React from "react";
 import { DropdownProvider, useDropdown } from "./DropdownContext";
 
 const DropdownButton = () => {
-  return <button>Dropdown Button</button>;
+  const { selectedItem, toggleDropdown } = useDropdown();
+  return <button onClick={toggleDropdown}>
+    {selectedItem ? selectedItem : "Dropdown Button"}
+  </button>;
 };
 
 const DropdownMenu = ({ items }) => {
+  const { isOpen, toggleDropdown, selectItem } = useDropdown();
+
+  if (!isOpen) {
+    return null;
+  }
   return (
     <ul>
       {items.map((item) => (
-        <li key={item}>{item}</li>
+        <li key={item} onClick={() => {
+          toggleDropdown();
+          selectItem(item);
+        }}>{item}</li>
       ))}
     </ul>
   );
